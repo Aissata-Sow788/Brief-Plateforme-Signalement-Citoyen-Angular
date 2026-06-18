@@ -1,0 +1,111 @@
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark navbar-expand-lg bg-dark bg-opacity-75 border-bottom border-secondary">
+  <div class="container">
+    <a class="navbar-brand fw-bold" routerLink="/">
+      <span class="badge bg-danger me-2"></span>IncidentTrack
+    </a>
+    <button class="btn btn-danger btn-sm ms-auto fw-semibold" routerLink="/formulaire">
+      + Signaler un incident
+    </button>
+  </div>
+</nav>
+
+<div class="bg-hero">
+  <div class="container py-5">
+
+    <!-- HERO -->
+    <div class="text-center mb-5">
+      <span class="badge bg-danger bg-opacity-75 text-uppercase mb-3 px-3 py-2">Tableau de bord</span>
+      <h1 class="display-5 fw-bold text-white mb-2">
+        Incidents <span class="text-danger">signalés</span>
+      </h1>
+      <p class="text-secondary lead">Suivez et gérez les incidents signalés dans votre zone.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="row g-3 justify-content-center mb-5">
+      <div class="col-6 col-md-3">
+        <div class="card bg-dark bg-opacity-75 border-secondary text-center p-3">
+          <div class="display-6 fw-bold text-white">{{ listeincident.length }}</div>
+          <div class="small text-secondary text-uppercase">Total</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card bg-dark bg-opacity-75 border-secondary text-center p-3">
+          <div class="display-6 fw-bold text-danger">{{ countCat('Urgence') }}</div>
+          <div class="small text-secondary text-uppercase">Urgents</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card bg-dark bg-opacity-75 border-secondary text-center p-3">
+          <div class="display-6 fw-bold text-warning">{{ countCat('Voirie') }}</div>
+          <div class="small text-secondary text-uppercase">Voirie</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="card bg-dark bg-opacity-75 border-secondary text-center p-3">
+          <div class="display-6 fw-bold text-success">{{ countCat('Environnement') }}</div>
+          <div class="small text-secondary text-uppercase">Autres</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LABEL -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h5 class="text-white fw-semibold mb-0">Incidents récents</h5>
+      <span class="badge bg-secondary">{{ listeincident.length }} résultats</span>
+    </div>
+
+    <!-- CARDS -->
+    <div class="row g-4">
+      @for (incident of listeincident; track incident.id) {
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="card bg-dark rounded-4 bg-opacity-75 border-secondary text-white h-100">
+
+            @if (incident.imageUrl) {
+              <img [src]="incident.imageUrl" [alt]="incident.titre" class="card-img-top">
+            } @else {
+              <div class="card-img-placeholder bg-secondary bg-opacity-25
+                          d-flex align-items-center justify-content-center fs-1">
+
+              </div>
+            }
+
+            <div class="card-body">
+              <span class="badge mb-2" [ngClass]="getCatBadge(incident.categorie)">
+                {{ incident.categorie }}
+              </span>
+    <h5 class="card-title fw-bold">{{ incident.titre }}</h5>
+              <p class="text-secondary small mb-1">👤 {{ incident.nom }}</p>
+              <!-- <p class="card-text text-secondary small">{{ incident.description }}</p> -->
+            </div>
+
+            <div class="card-footer bg-transparent border-secondary
+                        d-flex justify-content-between align-items-center">
+              <small class="text-secondary">📍 {{ incident.localisation }}</small>
+
+            <button class="btn btn-outline-danger btn-sm" [routerLink]="['/detail/', incident.id]">
+              Voir plus →
+            </button>
+
+
+            </div>
+
+          </div>
+        </div>
+      }
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-dark bg-opacity-75 border-top border-secondary py-4">
+  <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+    <span class="text-secondary small">© 2026 IncidentTrack — Dakar, Sénégal</span>
+    <div class="d-flex gap-3">
+      <a href="#" class="text-secondary small text-decoration-none">À propos</a>
+      <a href="#" class="text-secondary small text-decoration-none">Contact</a>
+    </div>
+  </div>
+</footer>

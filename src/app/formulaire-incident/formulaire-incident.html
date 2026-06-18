@@ -1,0 +1,147 @@
+<div class="bg-hero">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark bg-dark bg-opacity-75 border-bottom border-secondary">
+    <div class="container">
+      <a class="navbar-brand fw-bold" routerLink="/">
+        <span class="badge bg-danger me-2"></span>IncidentTrack
+      </a>
+      <button class="btn btn-outline-light btn-sm" (click)="retour()">← Retour</button>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-7">
+
+        <div class="card bg-dark bg-opacity-75 border-secondary text-white shadow-lg">
+
+          <!-- HEADER -->
+          <div class="card-header bg-danger bg-opacity-25 border-secondary d-flex align-items-center gap-3 py-3">
+            <div class="badge bg-danger fs-4 p-2 rounded-3">📋</div>
+            <div>
+              <h5 class="mb-0 fw-bold">Signaler un incident</h5>
+              <small class="text-secondary">Remplissez les informations ci-dessous</small>
+            </div>
+          </div>
+
+          <div class="card-body p-4">
+            <form [formGroup]="form" (ngSubmit)="AddSubmit()">
+
+              <!-- NOM -->
+              <div class="mb-3">
+                <label class="form-label text-secondary small text-uppercase fw-semibold">
+                  Nom du déclarant
+                </label>
+                <input type="text" formControlName="nom"
+                  class="form-control bg-dark border-secondary text-white"
+                  placeholder="Entrez votre nom">
+                @if (form.get('nom')?.invalid && form.get('nom')?.touched) {
+                  <div class="text-danger small mt-1">⚠ Nom obligatoire (min. 3 caractères)</div>
+                }
+              </div>
+
+              <!-- TITRE + CATEGORIE -->
+              <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                  <label class="form-label text-secondary small text-uppercase fw-semibold">Titre</label>
+                  <input type="text" formControlName="titre"
+                    class="form-control bg-dark border-secondary text-white"
+                    placeholder="Titre de l'incident">
+                  @if (form.get('titre')?.invalid && form.get('titre')?.touched) {
+                    <div class="text-danger small mt-1">⚠ Titre obligatoire (min. 3 caractères)</div>
+                  }
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label text-secondary small text-uppercase fw-semibold">Catégorie</label>
+                  <select formControlName="categorie"
+                    class="form-select bg-dark border-secondary text-white">
+                    <option value="">Sélectionner...</option>
+                    <option value="Urgence">Urgence</option>
+                    <option value="Voirie">Voirie</option>
+                    <option value="Éclairage"> Éclairage</option>
+                    <option value="Environnement">Environnement</option>
+                    <option value="Autre"> Autre</option>
+                  </select>
+                  @if (form.get('categorie')?.invalid && form.get('categorie')?.touched) {
+                    <div class="text-danger small mt-1">⚠ Catégorie obligatoire</div>
+                  }
+                </div>
+              </div>
+
+              <!-- DESCRIPTION -->
+              <div class="mb-3">
+                <label class="form-label text-secondary small text-uppercase fw-semibold">Description</label>
+                <textarea formControlName="description" rows="4"
+                  class="form-control bg-dark border-secondary text-white"
+                  placeholder="Décrivez l'incident en détail..."></textarea>
+                @if (form.get('description')?.invalid && form.get('description')?.touched) {
+                  <div class="text-danger small mt-1">⚠ Description obligatoire (min. 25 caractères)</div>
+                }
+              </div>
+
+              <!-- LOCALISATION -->
+              <div class="mb-3">
+                <label class="form-label text-secondary small text-uppercase fw-semibold">Localisation</label>
+                <input type="text" formControlName="localisation"
+                  class="form-control bg-dark border-secondary text-white"
+                  placeholder="Ex: Plateau, Rue 12, Dakar">
+                @if (form.get('localisation')?.invalid && form.get('localisation')?.touched) {
+                  <div class="text-danger small mt-1">⚠ Localisation obligatoire</div>
+                }
+              </div>
+
+              <!-- IMAGE -->
+              <div class="mb-4">
+                <label class="form-label text-secondary small text-uppercase fw-semibold">
+                  Photo de l'incident
+                </label>
+                <div class="upload-zone p-4 text-center rounded-3"
+                  (click)="fileInput.click()">
+                  <input #fileInput type="file" accept="image/*"
+                    class="d-none" (change)="onImageChange($event)">
+                 <i class="fs-1 mb-2 d-block"
+                    [ngClass]="imagePreview ? 'bi bi-check-circle-fill text-success' : 'bi bi-camera text-secondary'">
+                  </i>
+                  <p class="mb-1 text-secondary small">
+                    <span class="text-danger fw-semibold">
+                      {{ imageNom || 'Cliquez pour choisir' }}
+                    </span>
+                    {{ imageNom ? '' : ' ou glissez une image' }}
+                  </p>
+                  <p class="text-secondary" style="font-size:11px">PNG, JPG, WEBP — max 5 Mo</p>
+                </div>
+                @if (imagePreview) {
+                  <img [src]="imagePreview" class="w-100 rounded-3 mt-2" style="max-height:180px;object-fit:cover" alt="Aperçu">
+                }
+              </div>
+
+              <!-- ACTIONS -->
+              <div class="d-flex justify-content-end gap-2 pt-3 border-top border-secondary">
+                <button type="button" class="btn btn-outline-secondary" (click)="resetForm()">
+                  Réinitialiser
+                </button>
+                <button type="submit" class="btn btn-danger fw-semibold px-4" [disabled]="form.invalid">
+                  ✓ Enregistrer l'incident
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-dark bg-opacity-75 border-top border-secondary py-3 mt-4">
+    <div class="container d-flex justify-content-between align-items-center">
+      <span class="text-secondary small">© 2026 IncidentTrack — Dakar, Sénégal</span>
+      <div class="d-flex gap-3">
+        <a href="#" class="text-secondary small text-decoration-none">À propos</a>
+        <a href="#" class="text-secondary small text-decoration-none">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+</div>

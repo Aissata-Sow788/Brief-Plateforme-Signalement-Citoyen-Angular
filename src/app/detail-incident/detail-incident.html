@@ -1,0 +1,107 @@
+@if (incident) {
+<div class="bg-hero">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark bg-dark bg-opacity-75 border-bottom border-secondary">
+    <div class="container">
+      <a class="navbar-brand fw-bold" routerLink="/">
+        <span class="badge bg-danger me-2"></span>IncidentTrack
+      </a>
+      <button class="btn btn-outline-light btn-sm" (click)="retour()">
+        ← Retour à la liste
+      </button>
+    </div>
+  </nav>
+
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8">
+
+        <div class="card bg-dark bg-opacity-75 border-secondary text-white shadow-lg overflow-hidden">
+
+          <!-- IMAGE -->
+          <img [src]="incident.imageUrl" [alt]="incident.titre"
+            class="card-img-top detail-img">
+
+          <div class="card-body p-4">
+
+            <!-- BADGE + TITRE -->
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span class="badge px-3 py-2 fs-6" [ngClass]="getCatBadge(incident.categorie)">
+                {{ incident.categorie }}
+              </span>
+            </div>
+            <!-- Bouton Modifier -->
+
+
+            <h2 class="fw-bold mb-3">{{ incident.titre }}</h2>
+
+            <p class="text-white  mb-4" style="line-height:1.7">
+              {{ incident.description }}
+            </p>
+
+            <!-- INFOS -->
+            <div class="row g-3 mb-4">
+
+              <div class="col-6">
+                <div class="d-flex align-items-center gap-3 p-3
+                  bg-dark border border-secondary rounded-3">
+                  <span class="fs-4">👤</span>
+                  <div>
+                    <div class="text-secondary"
+                      style="font-size:11px;text-transform:uppercase;letter-spacing:.5px">
+                      Déclarant
+                    </div>
+                    <div class="fw-semibold small">{{ incident.nom }}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="d-flex align-items-center gap-3 p-3
+                  bg-dark border border-secondary rounded-3">
+                  <span class="fs-4">📍</span>
+                  <div>
+                    <div class="text-secondary"
+                      style="font-size:11px;text-transform:uppercase;letter-spacing:.5px">
+                      Localisation
+                    </div>
+                    <div class="fw-semibold small">{{ incident.localisation }}</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <hr class="border-secondary">
+
+            <!-- LIKE -->
+            <div class="d-flex justify-content-between align-items-center">
+              <button class="btn fw-semibold px-4"
+                [class]="liked ? 'btn-warning' : 'btn-outline-warning'"
+                (click)="compter()">
+                 {{ textcontent }}
+              </button>
+              <span class="text-white small">{{ cpt }} approbation(s)</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-dark bg-opacity-75 border-top border-secondary py-3 mt-4">
+    <div class="container d-flex justify-content-between align-items-center">
+      <span class="text-secondary small">© 2026 IncidentTrack — Dakar, Sénégal</span>
+      <div class="d-flex gap-3">
+        <a href="#" class="text-secondary small text-decoration-none">À propos</a>
+        <a href="#" class="text-secondary small text-decoration-none">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+}
