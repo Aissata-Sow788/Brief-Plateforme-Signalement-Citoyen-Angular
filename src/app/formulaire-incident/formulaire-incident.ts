@@ -10,10 +10,10 @@ import { Router } from '@angular/router';
   templateUrl: './formulaire-incident.html',
   styleUrl: './formulaire-incident.css',
 })
+
 export class FormulaireIncident implements OnInit {
 
   form!: FormGroup;
-  updateForm: IncidentCarte[] = [];
   imagePreview: string | null = null;
   imageNom: string = '';
 
@@ -35,7 +35,7 @@ export class FormulaireIncident implements OnInit {
   }
 
   onImageChange(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
+    const file = (event.target as HTMLInputElement).files?.[0]; // C'est ce qu'on appelle un cast (ou une assertion de type).
     if (!file) return;
 
     this.imageNom = file.name;
@@ -70,21 +70,4 @@ export class FormulaireIncident implements OnInit {
   this.router.navigateByUrl('/');
 }
 
-modifier(): void {
-
-  if (this.form.valid) {
-
-    this.incidentService.updateIncident(this.form.value);
-
-  }
-
-}
-
-delete(id: number): void {
-
-  this.incidentService.deleteIncident(id);
-
-  this.updateForm = this.incidentService.getListe();
-
-}
 }

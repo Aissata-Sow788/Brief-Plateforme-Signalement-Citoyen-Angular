@@ -1,6 +1,6 @@
 .bg-hero {
   background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)),
-    url('https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=1400&q=80')
+    url('https://simplonline.co/_next/image?url=https%3A%2F%2Fsimplonline-v3-prod.s3.eu-west-3.amazonaws.com%2Fmedia%2Fimage%2Fpng%2Fdkp-69f8986781e89143713467.png&w=1280&q=75')
     center / cover fixed;
   min-height: 100vh;
 }
