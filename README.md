@@ -13,13 +13,13 @@ L'application permet de consulter la liste des incidents, d'ajouter un nouveau s
 ## Cloner le projet
 
 ```bash
-git clone https://github.com/votre-utilisateur/nom-du-projet.git
+git clone https://github.com/Aissata-Sow788/Brief-Plateforme-Signalement-Citoyen-Angular.git
 ```
 
 ## Accéder au dossier
 
 ```bash
-cd nom-du-projet
+cd Brief-Civic-Tech
 ```
 
 ## Installer les dépendances
@@ -51,7 +51,7 @@ App
 │
 ├ListeIncident (Page d'accueil)
 │    
-│ardIncident (@Input)
+│incident.service 
 │
 FormulaireIncident
 │
@@ -68,14 +68,6 @@ Composant racine de l'application.
 
 * Récupère la liste des incidents.
 * Affiche toutes les cartes.
-* Gère la suppression.
-* Reçoit les événements envoyés par les cartes.
-
-### CardIncident
-
-* Affiche les informations d'un incident.
-* Reçoit les données via **@Input()**.
-* Émet un événement **@Output()** lorsqu'un utilisateur clique sur **Soutenir cette cause**.
 
 ### FormulaireIncident
 
@@ -104,8 +96,6 @@ Le service est responsable de :
 * récupérer tous les incidents ;
 * récupérer un incident grâce à son identifiant ;
 * ajouter un incident ;
-* modifier un incident ;
-* supprimer un incident.
 
 Les données sont conservées dans le **LocalStorage** du navigateur afin d'être persistantes après un rechargement de la page.
 
@@ -189,13 +179,13 @@ Lorsqu'un incident est enregistré :
 
 ## 5. Communication entre composants (@Input)
 
-Le composant **CardIncident** reçoit les informations d'un incident depuis son parent grâce à **@Input()**.
+Ce service centralise toutes les opérations liées aux incidents :
 
-Exemple :
+- récupération de la liste des incidents ;
+- récupération d'un incident par son identifiant ;
+- ajout d'un nouvel incident ;
 
-```typescript
-@Input() incident!: IncidentCarte;
-```
+La navigation entre les pages est réalisée avec le `Router` d'Angular. Les paramètres de l'URL sont récupérés dans les composants grâce à `ActivatedRoute`, notamment pour afficher le détail d'un incident.
 
 ---
 
@@ -218,22 +208,12 @@ Les catégories possèdent un badge coloré :
 
 ## 7. Communication avec @Output
 
-Chaque carte possède un bouton :
+Chaque carte dans le detail possède un bouton :
 
 ```
 Soutenir cette cause
 ```
-
-Le clic déclenche un **EventEmitter** qui informe le composant parent afin d'incrémenter le compteur global des soutiens.
-
-Exemple :
-
-```typescript
-@Output() soutenir =
-new EventEmitter<number>();
-```
-
----
+avec un compteur
 
 # Technologies utilisées
 

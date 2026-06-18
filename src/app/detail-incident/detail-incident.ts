@@ -13,7 +13,6 @@ import { NgClass } from '@angular/common';
 export class DetailIncident implements OnInit {
 
   incident: IncidentCarte | undefined;
-  liked = false;
   cpt = 0;
   textcontent="Signaler";
 
