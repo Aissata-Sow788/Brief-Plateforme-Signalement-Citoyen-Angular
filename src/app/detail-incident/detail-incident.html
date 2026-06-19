@@ -73,15 +73,12 @@
 
             <hr class="border-secondary">
 
-            <!-- LIKE -->
-            <div class="d-flex justify-content-between align-items-center">
-              <button class="btn fw-semibold px-4"
-                /* [class]="liked ? 'btn-warning' : 'btn-outline-warning'" */
-                (click)="compter()">
-                 {{ textcontent }}
-              </button>
-              <span class="text-white small">{{ cpt }} approbation(s)</span>
-            </div>
+<button
+  class="btn fw-semibold px-4"
+  [class]="liked ? 'btn-warning' : 'btn-outline-warning'"
+  (click)="compter()">
+  👍 {{ liked ? 'Signalé' : "J'approuve" }} ({{ incident.signalements ?? 0 }})
+</button>
 
           </div>
         </div>

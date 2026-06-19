@@ -54,7 +54,54 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h5 class="text-white fw-semibold mb-0">Incidents récents</h5>
       <span class="badge bg-secondary">{{ listeincident.length }} résultats</span>
-    </div>
+    </div>   //filtrage
+   <div class="d-flex gap-2 mb-4 mt-4 flex-wrap">
+
+  <button
+    class="btn"
+    [ngClass]="categorieSelectionnee === 'Tous' ? 'btn-dark' : 'btn-outline-dark'"
+    (click)="filtrerCategorie('Tous')">
+    Tous
+  </button>
+
+  <button
+    class="btn"
+    [ngClass]="categorieSelectionnee === 'Urgence' ? 'btn-danger' : 'btn-outline-danger'"
+    (click)="filtrerCategorie('Urgence')">
+    Urgence
+  </button>
+
+  <button
+    class="btn"
+    [ngClass]="categorieSelectionnee === 'Voirie' ? 'btn-primary' : 'btn-outline-primary'"
+    (click)="filtrerCategorie('Voirie')">
+    Voirie
+  </button>
+
+  <button
+    class="btn"
+    [ngClass]="categorieSelectionnee === 'Éclairage' ? 'btn-warning text-dark' : 'btn-outline-warning'"
+    (click)="filtrerCategorie('Éclairage')">
+    Éclairage
+  </button>
+
+  <button
+    class="btn"
+    [ngClass]="categorieSelectionnee === 'Environnement' ? 'btn-success' : 'btn-outline-success'"
+    (click)="filtrerCategorie('Environnement')">
+    Environnement
+  </button>
+
+  <button
+    class="btn"
+    [ngClass]="categorieSelectionnee === 'Autre' ? 'btn-secondary' : 'btn-outline-secondary'"
+    (click)="filtrerCategorie('Autre')">
+    Autre
+  </button>
+
+</div>
+
+
 
     <!-- CARDS -->
     <div class="row g-4">
@@ -70,26 +117,37 @@
 
               </div>
             }
+<div class="card-body">
+  <span class="badge mb-2" [ngClass]="getCatBadge(incident.categorie)">
+    {{ incident.categorie }}
+  </span>
+  <h5 class="card-title fw-bold">{{ incident.titre }}</h5>
+  <p class="text-secondary small mb-1">
+    <i class="bi bi-person-fill me-1"></i>{{ incident.nom }}
+  </p>
+</div>
 
-            <div class="card-body">
-              <span class="badge mb-2" [ngClass]="getCatBadge(incident.categorie)">
-                {{ incident.categorie }}
-              </span>
-    <h5 class="card-title fw-bold">{{ incident.titre }}</h5>
-              <p class="text-secondary small mb-1">👤 {{ incident.nom }}</p>
-              <!-- <p class="card-text text-secondary small">{{ incident.description }}</p> -->
-            </div>
+<div class="card-footer bg-transparent border-secondary
+            d-flex justify-content-between align-items-center">
+  <small class="text-secondary">
+    <i class="bi bi-geo-alt-fill me-1"></i>{{ incident.localisation }}
+  </small>
 
-            <div class="card-footer bg-transparent border-secondary
-                        d-flex justify-content-between align-items-center">
-              <small class="text-secondary">📍 {{ incident.localisation }}</small>
+  <span class="badge bg-warning text-dark">
+    <i class="bi bi-hand-thumbs-up-fill me-1"></i>{{ incident.signalements ?? 0 }}
+  </span>
 
-            <button class="btn btn-outline-danger btn-sm" [routerLink]="['/detail/', incident.id]">
-              Voir plus →
-            </button>
-
-
-            </div>
+  <div class="d-flex gap-2">
+    @if (incident.id) {
+      <button class="btn btn-outline-danger btn-sm" [routerLink]="['/detail', incident.id]">
+        <i class="bi bi-eye-fill"></i>
+      </button>
+    }
+    <button class="btn btn-outline-secondary btn-sm" (click)="supprimer(incident.id)">
+      <i class="bi bi-trash3-fill"></i>
+    </button>
+  </div>
+</div>
 
           </div>
         </div>

@@ -13,6 +13,7 @@ import { NgClass } from '@angular/common';
 export class DetailIncident implements OnInit {
 
   incident: IncidentCarte | undefined;
+
   cpt = 0;
   textcontent="Signaler";
 
@@ -27,6 +28,10 @@ export class DetailIncident implements OnInit {
     // 1. Lire l'id dans l'URL
     const id = Number(this.route.snapshot.paramMap.get('id'));
     console.log(id);
+  this.incident = this.incidentService.getId(id);
+  this.liked = this.incidentService.estSignale(id);
+
+
 
     // 2. Récupérer l'incident dans le service
     this.incident = this.incidentService.getId(id);
@@ -42,15 +47,25 @@ getCatBadge(categorie: string): string {
   return map[categorie] ?? 'bg-secondary';
 }
 
-  compter(){
-    if(this.cpt < 1){
-      this.cpt++;
-      this.textcontent= 'Cause signler';
-    }else if(this.cpt >= 1) {
-      this.cpt--;
-      this.textcontent= 'Signaler';
-    }
-  }
+liked = false;
+
+compter(): void {
+  if (!this.incident) return;
+
+  this.liked = !this.liked;
+  this.incidentService.toggleSignalement(this.incident.id, this.liked);
+
+  this.incident.signalements = (this.incident.signalements ?? 0) + (this.liked ? 1 : -1);
+}
+  // compter(){
+  //   if(this.cpt < 1){
+  //     this.cpt++;
+  //     this.textcontent= 'Cause signler';
+  //   }else if(this.cpt >= 1) {
+  //     this.cpt--;
+  //     this.textcontent= 'Signaler';
+  //   }
+  // }
     retour(): void {
   this.router.navigateByUrl('/');
 }

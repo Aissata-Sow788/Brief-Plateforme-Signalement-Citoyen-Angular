@@ -9,6 +9,7 @@ export interface IncidentCarte {
   imageUrl: string,
   categorie: string;
   localisation: string;
+   signalements: number;
 }
 
 @Injectable({
@@ -25,7 +26,8 @@ export class IncidentService {
       description: 'Connexion internet coupée dans le bâtiment',
       imageUrl: 'https://i.pinimg.com/1200x/3e/30/9e/3e309e47d69c4640cf456100b0c7b0f8.jpg',
       categorie: 'Problème technique',
-      localisation: 'Dakar'
+      localisation: 'Dakar',
+      signalements: 0
     },
     {
       id: 2,
@@ -34,7 +36,8 @@ export class IncidentService {
       description: 'Coupure dans la salle informatique',
       imageUrl: 'https://i.pinimg.com/736x/c3/44/7f/c3447f6bf16456e878d781f67e6e9c0b.jpg',
       categorie: 'Problème technique',
-      localisation: 'Dakar'
+      localisation: 'Dakar',
+      signalements: 0
     }
   ];
   private platformId = inject(PLATFORM_ID);// Demande à Angular sur quelle plateforme le code s'exécute (navigateur ou serveur).
@@ -48,22 +51,30 @@ export class IncidentService {
   }
 
 
-  // CREATION
-  addIncident(incident: IncidentCarte): void {
-    if (this.incidents)
 
-  this.incidents.push(incident);
+// CREATION
+addIncident(incident: IncidentCarte): void {
+  // Génère un nouvel id automatiquement
+  const nouvelId = this.incidents.length > 0
+    ? Math.max(...this.incidents.map(i => i.id)) + 1
+    : 1;
 
-  if (isPlatformBrowser(this.platformId)) { // Vérifier qu'on est dans le navigateur
+  const nouvelIncident: IncidentCarte = {
+    ...incident,
+    id: nouvelId
+  };
+
+  this.incidents.push(nouvelIncident);
+
+  if (isPlatformBrowser(this.platformId)) {
     localStorage.setItem(
       'incidents',
       JSON.stringify(this.incidents)
     );
   }
-
 }
 
-private chargerIncident(): void {
+chargerIncident(): void {
 
   if (!isPlatformBrowser(this.platformId)) { // Vérifier qu'on est dans le navigateur
     return;
@@ -86,36 +97,37 @@ getId(id: number): IncidentCarte | undefined {
   return this.incidents.find(i => i.id === id);
 }
 
-deleteIncident(id: number): void {
-
-  this.incidents = this.incidents.filter(
-    incident => incident.id !== id
-  );
-
-  localStorage.setItem(
-    'incidents',
-    JSON.stringify(this.incidents)
-  );
-
+estSignale(id: number): boolean {
+  if (!isPlatformBrowser(this.platformId)) return false;
+  const likes = JSON.parse(localStorage.getItem('likes') || '[]');
+  return likes.includes(id);
 }
 
-updateIncident(incidentModifie: IncidentCarte): void {
+toggleSignalement(id: number, actif: boolean): void {
+  const incident = this.incidents.find(i => i.id === id);
+  if (incident) {
+    incident.signalements = (incident.signalements ?? 0) + (actif ? 0 : 0);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('incidents', JSON.stringify(this.incidents));
 
-  const index = this.incidents.findIndex(
-    incident => incident.id === incidentModifie.id
-  );
-
-  if (index !== -1) {
-
-    this.incidents[index] = incidentModifie;
-
-    localStorage.setItem(
-      'incidents',
-      JSON.stringify(this.incidents)
-    );
-
+      let likes: number[] = JSON.parse(localStorage.getItem('likes') || '[]');
+      if (actif) {
+        likes.push(id);
+      } else {
+        likes = likes.filter(likeId => likeId !== id);
+      }
+      localStorage.setItem('likes', JSON.stringify(likes));
+    }
   }
-
 }
+
+deleteIncident(id: number): void {
+  this.incidents = this.incidents.filter(incident => incident.id !== id);
+
+  if (isPlatformBrowser(this.platformId)) {
+    localStorage.setItem('incidents', JSON.stringify(this.incidents));
+  }
+}
+
 }
 
