@@ -102,11 +102,12 @@ estSignale(id: number): boolean {
   const likes = JSON.parse(localStorage.getItem('likes') || '[]');
   return likes.includes(id);
 }
-
 toggleSignalement(id: number, actif: boolean): void {
   const incident = this.incidents.find(i => i.id === id);
   if (incident) {
-    incident.signalements = (incident.signalements ?? 0) + (actif ? 0 : 0);
+    const nouvelleValeur = (incident.signalements ?? 0) + (actif ? 0 : 0);
+    incident.signalements = Math.max(0, nouvelleValeur); // jamais sous 0
+
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('incidents', JSON.stringify(this.incidents));
 
@@ -120,7 +121,6 @@ toggleSignalement(id: number, actif: boolean): void {
     }
   }
 }
-
 deleteIncident(id: number): void {
   this.incidents = this.incidents.filter(incident => incident.id !== id);
 
