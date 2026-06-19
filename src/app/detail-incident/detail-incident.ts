@@ -36,7 +36,7 @@ export class DetailIncident implements OnInit {
     // 2. Récupérer l'incident dans le service
     this.incident = this.incidentService.getId(id);
   }
-
+// Badge de coukeur pour les categories
 getCatBadge(categorie: string): string {
   const map: Record<string, string> = {
     'Urgence':       'bg-danger',
@@ -49,23 +49,17 @@ getCatBadge(categorie: string): string {
 
 liked = false;
 
+// Compteur de soutenir cette cause
+
 compter(): void {
   if (!this.incident) return;
 
   this.liked = !this.liked;
   this.incidentService.toggleSignalement(this.incident.id, this.liked);
 
-  this.incident.signalements = (this.incident.signalements ?? 0) + (this.liked ? 1 : -1);
+  // Ne plus modifier signalements ici
 }
-  // compter(){
-  //   if(this.cpt < 1){
-  //     this.cpt++;
-  //     this.textcontent= 'Cause signler';
-  //   }else if(this.cpt >= 1) {
-  //     this.cpt--;
-  //     this.textcontent= 'Signaler';
-  //   }
-  // }
+// Retour a la page d'acceuil
     retour(): void {
   this.router.navigateByUrl('/');
 }

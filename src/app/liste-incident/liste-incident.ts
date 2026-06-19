@@ -19,8 +19,10 @@ export class ListeIncident implements OnInit{
   cpt = 0;
   textcontent="Signaler";
   indexModification!: null;
+
     // Catégorie sélectionnée
   categorieSelectionnee: string = 'Tous';
+  
     // Liste complète (non modifiée)
   listeComplete: IncidentCarte[] = [];
 
@@ -88,6 +90,8 @@ compter(){
     }
 
   }
+
+  // Methode supprimer
   supprimer(id: number): void {
   if (confirm('Voulez-vous vraiment supprimer cet incident ?')) {
     this.incidentservice.deleteIncident(id);

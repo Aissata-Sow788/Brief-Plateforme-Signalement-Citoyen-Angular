@@ -34,6 +34,7 @@ export class FormulaireIncident implements OnInit {
     });
   }
 
+  // pour oploader les images
   onImageChange(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0]; // C'est ce qu'on appelle un cast (ou une assertion de type).
     if (!file) return;
@@ -47,12 +48,15 @@ export class FormulaireIncident implements OnInit {
     reader.readAsDataURL(file);
   }
 
+  // Reinitialiser le formulaire
   resetForm(): void {
     this.form.reset();
     this.imagePreview = null;
     this.imageNom = '';
   }
 
+
+// Ajouter les incidents
   AddSubmit(): void {
     if (this.form.valid) {
       const incident: IncidentCarte ={
@@ -66,6 +70,7 @@ export class FormulaireIncident implements OnInit {
       this.form.markAllAsTouched();
     }
   }
+
   retour(): void {
   this.router.navigateByUrl('/');
 }

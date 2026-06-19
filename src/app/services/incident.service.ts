@@ -97,34 +97,72 @@ getId(id: number): IncidentCarte | undefined {
   return this.incidents.find(i => i.id === id);
 }
 
+// Vérifie si un incident a déjà été signalé (liké) par l'utilisateur.
+// Les identifiants des incidents signalés sont stockés dans le localStorage.
 estSignale(id: number): boolean {
+
+  // Vérifie que le code s'exécute dans le navigateur.
+  // Si ce n'est pas le cas (SSR par exemple), on retourne false.
   if (!isPlatformBrowser(this.platformId)) return false;
+
+  // Récupère la liste des incidents signalés depuis le localStorage.
+  // Si aucune donnée n'existe, on utilise un tableau vide.
   const likes = JSON.parse(localStorage.getItem('likes') || '[]');
+
+  // Retourne true si l'identifiant est présent dans la liste.
   return likes.includes(id);
 }
-toggleSignalement(id: number, actif: boolean): void {
-  const incident = this.incidents.find(i => i.id === id);
-  if (incident) {
-    const nouvelleValeur = (incident.signalements ?? 0) + (actif ? 0 : 0);
-    incident.signalements = Math.max(0, nouvelleValeur); // jamais sous 0
 
+
+// Ajoute ou retire un signalement sur un incident.
+toggleSignalement(id: number, actif: boolean): void {
+ console.log("toggle appelé :", id, actif);
+  // Recherche l'incident correspondant à l'identifiant.
+  const incident = this.incidents.find(i => i.id === id);
+
+  if (incident) {
+
+    // Met à jour le nombre de signalements.
+    const nouvelleValeur = (incident.signalements ?? 0) + (actif ? 1 : -1);
+
+    // Empêche le nombre de signalements d'être négatif.
+    incident.signalements = Math.max(0, nouvelleValeur);
+
+    // Vérifie que le code est exécuté dans le navigateur.
     if (isPlatformBrowser(this.platformId)) {
+
+      // Sauvegarde la liste des incidents mise à jour.
       localStorage.setItem('incidents', JSON.stringify(this.incidents));
 
+      // Récupère les incidents déjà signalés.
       let likes: number[] = JSON.parse(localStorage.getItem('likes') || '[]');
+
+      // Si l'utilisateur vient de signaler l'incident,
+      // on ajoute son identifiant dans la liste.
       if (actif) {
         likes.push(id);
       } else {
+        // Sinon, on retire son identifiant de la liste.
         likes = likes.filter(likeId => likeId !== id);
       }
+
+      // Sauvegarde la nouvelle liste dans le localStorage.
       localStorage.setItem('likes', JSON.stringify(likes));
     }
   }
 }
+
+
+// Supprime un incident de la liste.
 deleteIncident(id: number): void {
+
+  // Conserve uniquement les incidents dont l'identifiant est différent.
   this.incidents = this.incidents.filter(incident => incident.id !== id);
 
+  // Vérifie que le code s'exécute dans le navigateur.
   if (isPlatformBrowser(this.platformId)) {
+
+    // Met à jour les données enregistrées dans le localStorage.
     localStorage.setItem('incidents', JSON.stringify(this.incidents));
   }
 }
